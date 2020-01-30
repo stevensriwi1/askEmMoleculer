@@ -19,8 +19,9 @@
   },
   "dependencies": {
     "firebase": "^7.7.0",
-    "moleculer-web": "^0.8.5",
-    "moleculer": "^0.13.9"
+    "firebase-admin": "^8.9.2",
+    "moleculer": "^0.13.9",
+    "moleculer-web": "^0.8.5"
   },
   "engines": {
     "node": ">= 8.x.x"
