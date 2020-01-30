@@ -1,0 +1,28 @@
+{
+  "name": "askEmMoleculer",
+  "version": "1.0.0",
+  "description": "My Moleculer microservices project",
+  "scripts": {
+    "dev": "moleculer-runner --repl --hot services",
+    "start": "moleculer-runner",
+    "cli": "moleculer connect ",
+    "lint": "eslint services"
+  },
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "moleculer-repl": "^0.5.7"
+  },
+  "dependencies": {
+    "firebase": "^7.7.0",
+    "moleculer-web": "^0.8.5",
+    "moleculer": "^0.13.9"
+  },
+  "engines": {
+    "node": ">= 8.x.x"
+  }
+}
