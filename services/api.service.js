@@ -10,6 +10,11 @@ module.exports = {
 	settings: {
 		port: process.env.PORT || 3000,
 
+		aliases: {
+			"POST user/registration": "manageusers.createAccount",
+			"POST user/registrationDatabase": "manageusers.createDatabaseAccount",
+			"POST user/signIn": "manageusers.signIn",
+		},
 		routes: [{
 			path: "/api",
 			whitelist: [
