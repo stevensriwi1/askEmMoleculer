@@ -63,7 +63,20 @@ module.exports = {
 
 			},
 			handler(ctx) {
+				console.log("successfully called")
 				return this.signIn(ctx);
+			}
+		},
+		signOut: {
+			handler()
+			{
+				firebase.auth().signOut().then(function() {
+					// Sign-out successful.
+					console.log("successful log out");
+				  }).catch(function(error) {
+					// An error happened.
+					console.log("unsuccessful log out");
+				  });
 			}
 		},
 		/**
@@ -106,7 +119,12 @@ module.exports = {
 		},
 
 		signIn(ctx) {
-			firebase.auth().signInWithEmailAndPassword(ctx.params.email, ctx.params.password).catch(function (error) {
+			firebase.auth().signInWithEmailAndPassword(ctx.params.email, ctx.params.password).then( function()
+			{
+				//sign in successful
+				console.log("successfull login")
+				return "successful"
+			}).catch(function (error) {
 				// Handle Errors here.
 				var errorCode = error.code;
 				var errorMessage = error.message;
