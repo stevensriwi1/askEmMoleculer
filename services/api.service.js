@@ -11,12 +11,14 @@ module.exports = {
 		port: process.env.PORT || 3000,
 
 		aliases: {
-			"POST user/registration": "manageusers.createAccount",
-			"POST user/registrationDatabase": "manageusers.createDatabaseAccount",
-			"POST user/signIn": "manageusers.signIn",
 		},
 		routes: [{
 			path: "/api",
+			cors: {
+                origin: ["http://localhost:3000", "https://localhost:4000"],
+                methods: ["GET", "OPTIONS", "POST"],
+                credentials: true
+            },
 			whitelist: [
 				// Access to any actions in all services under "/api" URL
 				"**"

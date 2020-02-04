@@ -24,6 +24,20 @@ module.exports = {
 	 * Service settings
 	 */
 	settings: {
+		cors: {
+            // Configures the Access-Control-Allow-Origin CORS header.
+            origin: "*",
+            // Configures the Access-Control-Allow-Methods CORS header. 
+            methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE"],
+            // Configures the Access-Control-Allow-Headers CORS header.
+            allowedHeaders: [],
+            // Configures the Access-Control-Expose-Headers CORS header.
+            exposedHeaders: [],
+            // Configures the Access-Control-Allow-Credentials CORS header.
+            credentials: false,
+            // Configures the Access-Control-Max-Age CORS header.
+            maxAge: 3600
+        },
 
 	},
 
@@ -63,20 +77,8 @@ module.exports = {
 
 			},
 			handler(ctx) {
-				console.log("successfully called")
+				
 				return this.signIn(ctx);
-			}
-		},
-		signOut: {
-			handler()
-			{
-				firebase.auth().signOut().then(function() {
-					// Sign-out successful.
-					console.log("successful log out");
-				  }).catch(function(error) {
-					// An error happened.
-					console.log("unsuccessful log out");
-				  });
 			}
 		},
 		/**
@@ -118,18 +120,21 @@ module.exports = {
 			return firebase.firestore();
 		},
 
-		signIn(ctx) {
-			firebase.auth().signInWithEmailAndPassword(ctx.params.email, ctx.params.password).then( function()
-			{
-				//sign in successful
-				console.log("successfull login")
-				return "successful"
+		async signIn(ctx) {
+			var userId;
+			await firebase.auth().signInWithEmailAndPassword(ctx.params.email, ctx.params.password).then(function() {
+				console.log("successful loggin");
+				var currentUserTest = firebase.auth().currentUser;
+				userId = firebase.auth().currentUser.uid;
+				console.log(userId);
+				return userId;
 			}).catch(function (error) {
 				// Handle Errors here.
 				var errorCode = error.code;
 				var errorMessage = error.message;
 				// ...
-			})
+			});
+			return userId;
 		},
 		createAccount(ctx) {
 
