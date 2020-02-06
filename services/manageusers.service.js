@@ -63,7 +63,10 @@ module.exports = {
 		},
 		createDatabaseAccount: {
 			params: {
-				email: "string"
+				email: "string",
+				firstName: "string",
+				lastName: "string",
+				uid: "string"
 
 			},
 			handler(ctx) {
@@ -79,6 +82,20 @@ module.exports = {
 			handler(ctx) {
 				
 				return this.signIn(ctx);
+			}
+		},
+		getStatus:
+		{
+			handler()
+			{
+				return this.getStatus();
+			}
+		},
+		signOut:
+		{
+			handler()
+			{
+				return this.signOut();
 			}
 		},
 		/**
@@ -121,28 +138,49 @@ module.exports = {
 		},
 
 		async signIn(ctx) {
-			var userId;
-			await firebase.auth().signInWithEmailAndPassword(ctx.params.email, ctx.params.password).then(function() {
+			var user = null;
+			await firebase.auth().signInWithEmailAndPassword(ctx.params.email, ctx.params.password).then(function(result) {
 				console.log("successful loggin");
-				var currentUserTest = firebase.auth().currentUser;
-				userId = firebase.auth().currentUser.uid;
-				console.log(userId);
-				return userId;
+				console.log(result.user.uid);
+				user= result.user.uid;
+				console.log(user);
+				return user;
 			}).catch(function (error) {
 				// Handle Errors here.
 				var errorCode = error.code;
 				var errorMessage = error.message;
+				return null;
 				// ...
 			});
-			return userId;
+			if (user == null)
+			{
+				return null;
+			}
+			else{
+				return user;
+			}
 		},
-		createAccount(ctx) {
-
-			firebase.auth().createUserWithEmailAndPassword(ctx.params.email, ctx.params.password).catch(function (error) {
+		async createAccount(ctx) {
+			var user = null
+			await firebase.auth().createUserWithEmailAndPassword(ctx.params.email, ctx.params.password).then(function(result) {
+				console.log("successful creation");
+				user= result.user.uid;
+				console.log(user);
+				return user.toString();
+			}).catch(function (error) {
 				// Handle Errors here.
 				var errorCode = error.code;
 				var errorMessage = error.message;
+				return null;
+				// ...
 			});
+			if (user == null)
+			{
+				return null;
+			}
+			else{
+				return user;
+			}
 			/*db.collection("users").where("email", "==", ctx.params.email).get()
 				.then(function (querySnapshot) {
 					if (querySnapshot.size == 0) {
@@ -167,21 +205,32 @@ module.exports = {
 				});*/
 
 		},
-		createDataBaseUser(ctx) {
+		async createDataBaseUser(ctx) {
 			var db = this.getDatabase();
 			// Add a new document in collection "user"
 			let data = {
 				email: ctx.params.email,
-				firstName: "Steven",
-				lastName: "Sriwi"
+				firstName: ctx.params.firstName,
+				lastName: ctx.params.lastName
 			};
-			db.collection("users").doc(firebase.auth().currentUser.uid).set(data)
-				.then(function () {
+			await db.collection("users").doc(ctx.params.uid).set(data)
+				.then(function (result) {
 					console.log("Document successfully written!");
+					return result
 				})
 				.catch(function (error) {
 					console.error("Error writing document: ", error);
 				});
+		},
+		signOut()
+		{
+			firebase.auth().signOut().then(function() {
+				// Sign-out successful.
+				console.log("Log Out Successful!")
+				
+			  }).catch(function(error) {
+				// An error happened.
+			  });
 		},
 		getStatus() {
 			firebase.auth().onAuthStateChanged(function (user) {
@@ -195,6 +244,7 @@ module.exports = {
 					var uid = user.uid;
 					var providerData = user.providerData;
 					// ...
+					return user;
 				} else {
 					// User is signed out.
 					// ...
