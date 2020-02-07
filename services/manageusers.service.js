@@ -181,29 +181,6 @@ module.exports = {
 			else{
 				return user;
 			}
-			/*db.collection("users").where("email", "==", ctx.params.email).get()
-				.then(function (querySnapshot) {
-					if (querySnapshot.size == 0) {
-						return db
-							.collection("users")
-							.add({
-								firstName:ctx.params.firstName,
-								lastName:ctx.params.lastName,
-								email: ctx.params.email,
-								password: ctx.params.password
-							})
-							.then(function (docRef) {
-								console.log("Document written with ID: ", docRef.id);
-								return "Success";
-							})
-							.catch(function (error) {
-								console.error("Error adding document: ", error);
-							});
-					} else {
-						return "UserExist";
-					}
-				});*/
-
 		},
 		async createDataBaseUser(ctx) {
 			var db = this.getDatabase();
@@ -258,11 +235,6 @@ module.exports = {
 	 * Service created lifecycle event handler
 	 */
 	created() {
-		/*admin.initializeApp({
-			credential: admin.credential.cert(serviceAccount),
-			databaseURL: "https://askem-flutter.firebaseio.com"
-		});
-		*/
 		var db = this.getDatabase();
 
 		var aa = db
