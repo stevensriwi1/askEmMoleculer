@@ -21,7 +21,7 @@
     "firebase": "^7.7.0",
     "firebase-admin": "^8.9.2",
     "moleculer": "^0.13.9",
-    "moleculer-web": "^0.8.5"
+    "moleculer-web": "^0.10.4"
   },
   "engines": {
     "node": ">= 8.x.x"
